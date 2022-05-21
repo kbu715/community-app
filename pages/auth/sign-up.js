@@ -1,6 +1,7 @@
 import {useCallback, useMemo, useState} from "react";
 import {useRouter} from "next/router";
 import axios from 'axios';
+import { validateEmail } from '../../utils/helpers';
 
 export default function SignUp() {
     const router = useRouter();
@@ -14,6 +15,8 @@ export default function SignUp() {
         const errors = {};
         if (!email) {
             errors.email = '이메일은 필수 입력 항목입니다.';
+        } else if (!validateEmail(email)) {
+            errors.email = '올바르지 않은 이메일 형식입니다.'
         } else if (!password) {
             errors.password = '비밀번호는 필수 입력 항목입니다.';
         } else if (!name) {
@@ -35,7 +38,7 @@ export default function SignUp() {
           name
         })
           .then(() => {
-            alert('회원 가입 완료')
+            router.push('/auth/sign-in');
           })
           .catch(error => alert(error.response?.data?.message ?? error.message ?? '서버와 통신에 실패했습니다.'));
 
