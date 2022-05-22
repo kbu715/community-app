@@ -3,6 +3,7 @@ import {useCallback, useEffect, useState} from "react";
 import Cookies from 'universal-cookie';
 import {useRouter} from "next/router";
 import dayjs from 'dayjs';
+import Layout from '../components/Layout';
 
 export default function Me() {
     const [profile, setProfile] = useState({});
@@ -23,19 +24,20 @@ export default function Me() {
         delete axios.defaults.headers.common.Authorization;
         router.push( '/' );
     }, [])
-    return (
-        <div className="container">
-            <dl>
-                <dt>이메일</dt>
-                <dd>{profile.email}</dd>
-                <dt>이름</dt>
-                <dd>{profile.name}</dd>
-                <dt>가입일시</dt>
-                <dd>{profile.created_at}</dd>
-            </dl>
+    return (<Layout>
+                <div className="container">
+                    <dl>
+                        <dt>이메일</dt>
+                        <dd>{profile.email}</dd>
+                        <dt>이름</dt>
+                        <dd>{profile.name}</dd>
+                        <dt>가입일시</dt>
+                        <dd>{profile.created_at}</dd>
+                    </dl>
 
-            <button className="btn btn-danger" onClick={logout}>로그아웃</button>
-        </div>)
+                    <button className="btn btn-danger" onClick={logout}>로그아웃</button>
+            </div>
+        </Layout>)
 }
 
 export const getServerSideProps = async ({req, res, resolvedUrl}) => {
