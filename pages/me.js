@@ -4,9 +4,13 @@ import Cookies from 'universal-cookie';
 import {useRouter} from "next/router";
 import dayjs from 'dayjs';
 import Layout from '../components/Layout';
+import { useAtom } from 'jotai';
+import authAtom from '../stores/authAtom';
+import Link from 'next/link';
 
 export default function Me() {
     const [profile, setProfile] = useState({});
+    const [, setAuth] = useAtom(authAtom);
     const router = useRouter();
     useEffect(() => {
         axios.get(`${process.env.API_HOST}/me`)
@@ -22,6 +26,11 @@ export default function Me() {
         const cookies = new Cookies();
         cookies.remove('token');
         delete axios.defaults.headers.common.Authorization;
+        setAuth(auth => ({
+            ...auth,
+            user: null,
+            token: null,
+        }))
         router.push( '/' );
     }, [])
     return (<Layout>
@@ -36,6 +45,9 @@ export default function Me() {
                     </dl>
 
                     <button className="btn btn-danger" onClick={logout}>로그아웃</button>
+                    <Link href='/'>
+                        <a className="btn btn-secondary">홈으로</a>
+                    </Link>
             </div>
         </Layout>)
 }

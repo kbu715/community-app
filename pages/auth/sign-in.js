@@ -3,6 +3,10 @@ import axios from 'axios';
 import { validateEmail } from '../../utils/helpers';
 import {useRouter} from "next/router";
 import Cookies from "universal-cookie";
+import { useAtom } from 'jotai';
+import authAtom from '../../stores/authAtom';
+import Link from 'next/link';
+import Layout from '../../components/Layout';
 
 
 
@@ -29,8 +33,10 @@ import Cookies from "universal-cookie";
  */
 
 export default function SignIn() {
+    const [auth, setAuth] = useAtom(authAtom);
     const router = useRouter();
     return (
+        <Layout>
         <div className="container">
             <h1>로그인</h1>
             <Formik
@@ -55,11 +61,16 @@ export default function SignIn() {
                         .then(response => {
                             console.log(response.data);
                             const cookies = new Cookies();
+                            const user = response.data.user;
                             const token = response.data.token.token;
                             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                             // use '/' as the path if you want your cookie to be accessible on all pages
                             cookies.set('token', token, {path: '/'});
-                            
+                            setAuth(auth => ({
+                                ...auth,
+                                user,
+                                token
+                            }))
                             router.push(router.query.ref ?? '/me');
                         })
                         .catch(error => {
@@ -107,10 +118,14 @@ export default function SignIn() {
                             <button type="submit" className="btn btn-primary">
                                 {isSubmitting ? '로그인 중...' : '로그인'}
                             </button>
+                            <Link href='/'>
+                                <a className="btn btn-secondary">홈으로</a>
+                            </Link>
                         </div>
                     </form>
                 )}
             </Formik>
         </div>
+        </Layout>
     )
 }
