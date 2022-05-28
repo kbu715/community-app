@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Community App with Next.js</title>
+        <title>Community App</title>
       </Head>
       <Component {...pageProps} />
     </>

@@ -1,5 +1,6 @@
 import useFetch from '../../hooks/useFetch';
 import Head from 'next/head';
+import nl2br from 'react-nl2br';
 
 export default function ArticleView({ id }) {
   const { data, error } = useFetch(`${process.env.API_HOST}/articles/${id}`);
@@ -9,11 +10,11 @@ export default function ArticleView({ id }) {
   return (
     <div className="container">
       <Head>
-        <title>{data?.subject}</title>
+        <title>{data?.subject} - Community App</title>
       </Head>
       <h1>{data?.subject}</h1>
       <hr />
-      <p>{data?.content}</p>
+      <p>{nl2br(data?.content)}</p>
     </div>
   );
 }
