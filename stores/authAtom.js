@@ -1,7 +1,7 @@
-import {atom} from 'jotai';
+import { atom } from 'jotai';
 
 export default atom({
-    loaded: false,
-    token: null,
-    user: null,
+  loaded: false,
+  token: null,
+  user: null,
 });
