@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 import useFetch from '../../hooks/useFetch';
 
-export default function ArticleList({ title, category }) {
-  const { data, error } = useFetch(`${process.env.API_HOST}/articles?category=${category}`);
+export default function ArticleList({ title, category, page }) {
+  const { data, error } = useFetch(`${process.env.API_HOST}/articles?category=${category}&page=${page}`);
+  const router = useRouter();
 
   if (error) {
     return <>데이터를 불러올 수 없습니다.</>;
@@ -22,7 +26,17 @@ export default function ArticleList({ title, category }) {
         ))}
       </ul>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between align-items-center">
+        {data?.meta && (
+          <Pagination
+            current={data?.meta?.current_page}
+            total={data?.meta?.total}
+            pageSize={data?.meta?.per_page}
+            onChange={(page) => {
+              router.push(`?page=${page}`);
+            }}
+          />
+        )}
         <Link href={`/articles/${category}/create`}>
           <a className="btn btn-primary">글 작성하기</a>
         </Link>
