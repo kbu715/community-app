@@ -1351,6 +1351,11 @@
   dependencies:
     "call-bind" "^1.0.2"
 
+"isbot@^3.5.0":
+  "integrity" "sha512-QOFF7IE7hUdzo8pbhCubeiMzKdLZt+W/UwRZWwg+zghmnqXoMwh2V0bi5UT+oIvoD0IWCWjzAtp30ZrrRwJVCg=="
+  "resolved" "https://registry.npmjs.org/isbot/-/isbot-3.5.0.tgz"
+  "version" "3.5.0"
+
 "isexe@^2.0.0":
   "integrity" "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
   "resolved" "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"

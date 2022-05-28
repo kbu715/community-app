@@ -2,6 +2,7 @@ import Layout from '../../../components/Layout';
 import ArticleView from '../../../components/articles/ArticleView';
 import { fetcher } from '../../../hooks/useFetch';
 import { SWRConfig } from 'swr';
+import isbot from 'isbot';
 
 export default function ViewPage({ id, fallback }) {
   return (
@@ -13,11 +14,14 @@ export default function ViewPage({ id, fallback }) {
   );
 }
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = async ({ req, params }) => {
   // context: { params }
   const id = params.id;
   const url = `${process.env.API_HOST}/articles/${id}`;
-  const article = await fetcher(url);
+  // req.headers['user-agent']
+  // Detect bots/crawlers/spiders using the user agent string.
+  // bot인 경우에만 prefetch를 하게 된다.
+  const article = isbot(req.headers['user-agent']) ? await fetcher(url) : null;
   return {
     props: {
       id,
